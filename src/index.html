@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Enloop-Hub</title>
+        <link rel="shortcut icon" href="images/favicon.ico">
+        <link rel="stylesheet" href="vender/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="vender/nanoscroller/nanoscroller.css">
+        <link rel="stylesheet" href="vender/jquery-ui/jquery-ui.min.css">
+        <link rel="stylesheet" href="css/style.min.css">
+    </head>
+    <body>
+        <div class="g-head">
+            <div class="head-notify">
+                <i class="icon icon-logo"></i>
+                <h2>Enloop-Hub</h2>
+            </div>
+            <div class="head-operate">
+                <a class="btn btn-new-file" title="新建"></a>
+                <a class="btn btn-file-open" title="打开"></a>
+                <a class="btn btn-file-reserve" title="保存"></a>
+                <a class="btn btn-save-as" title="另存为"></a>
+                <a class="btn btn-save-all" title="全部保存" id="checkThePos"></a>
+            </div>
+            <div class="about-login">
+                <img src="./images/pic_user.png" width="34" height="34">
+                <a class="btn" id="loginin">登录</a>
+                <a class="btn hidei" id="loginout">退出</a>
+            </div>
+        </div>
+        <div class="g-body">
+            <div class="drag-indicator" id="drag_indicator"><i class="icon icon-arrow-right"></i>移动到<em></em></div>
+            <!-- 用以点击阻止冒泡事件时手动触发window事件监听函数，目标区域很小时可不触发 -->
+            <div class="empty-area" id="emptyArea"></div>
+            <!-- 左侧导航 -->
+            <div class="m-side-nav">
+                <div class="top-search">
+                    <div>资源库<a class="btn btn-search"><i class="icon icon-magnify"></i></a></div>
+                    <ul class="hide">
+                        <li>
+                            <div class="input-group select-con" id="libCategory">
+                                <input class="form-control select-body" type="text" value="作业设计">
+                                <a class="btn arrow-down"></a>
+                                <ul class="select-content">
+                                    <li>作业设计</li>
+                                    <li>数据源</li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="input-group">
+                                <input class="form-control" type="text" placeholder="请输入关键字" id="searchLib">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="components-list navigation" id="mainNav">
+                    <div class="bar root" category="task">
+                        <div class="inner">
+                            <i class="fa fa-caret-right"></i>
+                            <i class="icon icon-fold"></i>
+                            <span nameStatic="static">作业设计</span>
+                            <a class="btn edage add-item" title="新建子文件"><i class="icon icon-rec-plus"></i></a>
+                            <a class="btn inside add-fold" title="新建文件夹"><i class="icon icon-fold-plus"></i></a>
+                        </div>
+                        <div class="lib">
+                            <div class="bar">
+                                <div class="inner">
+                                    <i class="fa fa-caret-right"></i>
+                                    <i class="icon icon-fold"></i>
+                                    <span>表到表</span>
+                                    <a class="btn edage del-fold" title="删除文件夹"><i class="icon icon-round-times"></i></a>
+                                    <a class="btn inside add-item" title="新建作业"><i class="icon icon-rec-plus"></i></a>
+                                </div>
+                                <div class="lib">
+                                    <div class="items" id="111">
+                                        <span>矫正1</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                    <div class="items" id="112">
+                                        <span>矫正2</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                    <div class="items" id="113">
+                                        <span>矫正3</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                    <div class="items" id="112">
+                                        <span>矫正2</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                    <div class="items" id="113">
+                                        <span>矫正2</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bar">
+                                <div class="inner">
+                                    <i class="fa fa-caret-right"></i>
+                                    <i class="icon icon-fold"></i>
+                                    <span>文件到表</span>
+                                    <a class="btn edage del-fold" title="删除文件夹"><i class="icon icon-round-times"></i></a>
+                                    <a class="btn inside add-item" title="新建作业"><i class="icon icon-rec-plus"></i></a>
+                                </div>
+                                <div class="lib">
+                                    <div class="items" id="121">
+                                        <span>信息1</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                    <div class="items" id="122">
+                                        <span>信息2</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                    <div class="items" id="123">
+                                        <span>信息3</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bar root" category="data">
+                        <div class="inner">
+                            <i class="fa fa-caret-right"></i>
+                            <i class="icon icon-fold"></i>
+                            <span nameStatic="static">数据源</span>
+                            <a class="btn edage add-item" title="新建子文件"><i class="icon icon-rec-plus"></i></a>
+                            <a class="btn inside add-fold" title="新建数据源"><i class="icon icon-fold-plus"></i></a>
+                        </div>
+                        <div class="lib">
+                            <div class="bar">
+                                <div class="inner">
+                                    <i class="fa fa-caret-right"></i>
+                                    <i class="icon icon-fold"></i>
+                                    <span>oracle</span>
+                                    <a class="btn edage del-fold" title="删除文件夹"><i class="icon icon-round-times"></i></a>
+                                    <a class="btn inside add-item" title="新建子文件"><i class="icon icon-rec-plus"></i></a>
+                                </div>
+                                <div class="lib">
+                                    <div class="items" id="211">
+                                        <span>Iowa</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                    <div class="items" id="212">
+                                        <span>Montana</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                    <div class="items" id="213">
+                                        <span>Yamato</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bar">
+                                <div class="inner">
+                                    <i class="fa fa-caret-right"></i>
+                                    <i class="icon icon-fold"></i>
+                                    <span>Hbase</span>
+                                    <a class="btn edage del-fold" title="删除文件夹"><i class="icon icon-round-times"></i></a>
+                                    <a class="btn inside add-item" title="新建数据源"><i class="icon icon-rec-plus"></i></a>
+                                </div>
+                                <div class="lib">
+                                    <div class="items" id="221">
+                                        <span>severodvinsk</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                    <div class="items" id="222">
+                                        <span>Ohio</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                    <div class="items" id="223">
+                                        <span>Delta</span>
+                                        <a class="btn edage del-item" title="删除"><i class="icon icon-round-times"></i></a>
+                                        <a class="btn inside editor" title="编辑"><i class="icon icon-pencil"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 中间部分 -->
+            <div class="m-center">
+                <a class="btn btn-controller running"></a>
+                <!-- 顶部标签（这部分不会显隐） -->
+                <div class="m-tabs" id="tabArea">
+                    <!-- <span link-lib="111" class="tab active">矫正1<a class="btn close">&times;</a></span> -->
+                </div>
+                <!-- 以下部分是可切换的 -->
+                <!-- 核心区域 -->
+
+                <!-- 占位符 -->
+                <div class="m-core entrance-scene">
+                    <div class="inner">
+                        <img src="./images/pic_Scene.png" width="350" height="350">
+                        <h1>欢迎使用Enloop-Hub</h1>
+                    </div>
+                </div>
+                <!-- 核心区域需要有多个 -->
+                <div class="m-core hide" lib-belong="111">
+                    <div class="container"></div>
+                </div>
+                <!-- 底部区域 -->
+                <!-- 底部区域建议固定一个 内容填充即可 -->
+                <div class="m-show-bellow hide" lib-belong="111">
+                    <a class="btn btn-dragger"></a>
+                    <div class="u-tabs">
+                        <a class="btn default active" role="tabTrigger" group="group_1">作业</a>
+                        <a class="btn default" role="tabTrigger" group="group_1">组件</a>
+                        <a class="btn default" role="tabTrigger" group="group_1">运行</a>
+                    </div>
+                    <div class="u-shift" name="作业" role="tabResponser" group="group_1">
+                        <ul class="nav">
+                            <li class="active" role="tabTrigger" group="group_2">基本属性</li>
+                            <li role="tabTrigger" group="group_2">命名参数</li>
+                            <li role="tabTrigger" group="group_2">版本信息</li>
+                        </ul>
+                        <div class="show" role="tabResponser" group="group_2" name="基本属性">
+                            <h1>基本属性<a class="btn small bk-orange" role="reserve">保存</a></h1>
+                            <div class="tr-left">
+                                <div class="nano">
+                                    <div class="nano-content">
+                                        <div class="cell wp33">
+                                            <em>名称 :</em>
+                                            <span>矫正2</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>状态 :</em>
+                                            <span>发布</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>作者 :</em>
+                                            <span>admin</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>版本 :</em>
+                                            <span>V1.0</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>创建时间 :</em>
+                                            <span>2017-12-10</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>修改时间 :</em>
+                                            <span>2017-12-13</span>
+                                        </div>
+                                        <div class="cell wp100">
+                                            <em>目的 :</em>
+                                            <span>实现矫正局表到表的数据同步，能更好地处理数据</span>
+                                        </div>
+                                        <div class="cell wp100">
+                                            <em>描述 :</em>
+                                            <span>该作业实现源库Oracle的表到目标数据库Oracle的更新作业，大大提高效率</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="show hide" role="tabResponser" group="group_2" name="命名参数">
+                            <h1>命名参数</h1>
+                            <div>
+                                <div class="nano">
+                                    <div class="nano-content">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>序号</th>
+                                                    <th>参数</th>
+                                                    <th>类型</th>
+                                                    <th>默认值</th>
+                                                    <th>描述</th>
+                                                    <th>备注</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>v_date</td>
+                                                    <td>date</td>
+                                                    <td>some</td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>v_date</td>
+                                                    <td>date</td>
+                                                    <td>some</td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>v_date</td>
+                                                    <td>date</td>
+                                                    <td>some</td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4</td>
+                                                    <td>v_date</td>
+                                                    <td>date</td>
+                                                    <td>some</td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>5</td>
+                                                    <td>v_date</td>
+                                                    <td>date</td>
+                                                    <td>some</td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="u-shift hide" name="组件" role="tabResponser" group="group_1">
+                        <div class="show full-fill">
+                            <h1>起始组件<a class="btn small bk-orange" role="reserve">保存</a></h1>
+                            <div class="tr-left">
+                                <div class="nano">
+                                    <div class="nano-content">
+                                        <div class="cell wp33">
+                                            <em>重复 :</em>
+                                            <span>矫正2</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>类型 :</em>
+                                            <span>天</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>间隔 :</em>
+                                            <span>10s</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>间隔 :</em>
+                                            <span>2min</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>每天 :</em>
+                                            <span>8h</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>每周 :</em>
+                                            <span>5days</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>每月 :</em>
+                                            <span>2weeks</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="u-shift hide" name="运行" role="tabResponser" group="group_1">
+                        <ul class="nav">
+                            <li class="active" role="tabTrigger" group="group_3">基本运行</li>
+                            <li role="tabTrigger" group="group_3">开始调试</li>
+                        </ul>
+                        <div class="show" role="tabResponser" group="group_3" name="基本运行">
+                            <h1>基本运行
+                                <a class="btn small bk-blue">运行</a>
+                                <a class="btn small bk-orange">终止</a>
+                                <a class="btn small bk-red">清理</a>
+                            </h1>
+                            <div>
+                                <div class="nano">
+                                    <div class="nano-content">
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 以下为重复内容 -->
+                <div class="m-core hide" lib-belong="112"><div class="container"></div></div>
+                <div class="m-show-bellow hide" lib-belong="112">
+                    <a class="btn btn-dragger"></a>
+                    <div class="u-tabs">
+                        <a class="btn default active" role="tabTrigger" group="group_1">作业</a>
+                        <a class="btn default" role="tabTrigger" group="group_1">组件</a>
+                        <a class="btn default" role="tabTrigger" group="group_1">运行</a>
+                    </div>
+                    <div class="u-shift" name="作业" role="tabResponser" group="group_1">
+                        <ul class="nav">
+                            <li class="active" role="tabTrigger" group="group_2">基本属性</li>
+                            <li role="tabTrigger" group="group_2">命名参数</li>
+                            <li role="tabTrigger" group="group_2">版本信息</li>
+                        </ul>
+                        <div class="show" role="tabResponser" group="group_2" name="基本属性">
+                            <h1>基本属性<a class="btn small bk-orange" role="reserve">保存</a></h1>
+                            <div class="tr-left">
+                                <div class="nano">
+                                    <div class="nano-content">
+                                        <div class="cell wp33">
+                                            <em>名称 :</em>
+                                            <span>矫正2</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>状态 :</em>
+                                            <span>发布</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>作者 :</em>
+                                            <span>admin</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>版本 :</em>
+                                            <span>V1.0</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>创建时间 :</em>
+                                            <span>2017-12-10</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>修改时间 :</em>
+                                            <span>2017-12-13</span>
+                                        </div>
+                                        <div class="cell wp100">
+                                            <em>目的 :</em>
+                                            <span>实现矫正局表到表的数据同步，能更好地处理数据</span>
+                                        </div>
+                                        <div class="cell wp100">
+                                            <em>描述 :</em>
+                                            <span>该作业实现源库Oracle的表到目标数据库Oracle的更新作业，大大提高效率</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="show hide" role="tabResponser" group="group_2" name="命名参数">
+                            <h1>命名参数</h1>
+                            <div>
+                                <div class="nano">
+                                    <div class="nano-content">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>序号</th>
+                                                    <th>参数</th>
+                                                    <th>类型</th>
+                                                    <th>默认值</th>
+                                                    <th>描述</th>
+                                                    <th>备注</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>v_date</td>
+                                                    <td>date</td>
+                                                    <td>some</td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>v_date</td>
+                                                    <td>date</td>
+                                                    <td>some</td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>v_date</td>
+                                                    <td>date</td>
+                                                    <td>some</td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4</td>
+                                                    <td>v_date</td>
+                                                    <td>date</td>
+                                                    <td>some</td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>5</td>
+                                                    <td>v_date</td>
+                                                    <td>date</td>
+                                                    <td>some</td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                    <td><p>这是一段很长的文字这是一段很长的文字</p></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="u-shift hide" name="组件" role="tabResponser" group="group_1">
+                        <div class="show full-fill">
+                            <h1>起始组件<a class="btn small bk-orange" role="reserve">保存</a></h1>
+                            <div class="tr-left">
+                                <div class="nano">
+                                    <div class="nano-content">
+                                        <div class="cell wp33">
+                                            <em>重复 :</em>
+                                            <span>矫正2</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>类型 :</em>
+                                            <span>天</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>间隔 :</em>
+                                            <span>10s</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>间隔 :</em>
+                                            <span>2min</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>每天 :</em>
+                                            <span>8h</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>每周 :</em>
+                                            <span>5days</span>
+                                        </div>
+                                        <div class="cell wp33">
+                                            <em>每月 :</em>
+                                            <span>2weeks</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="u-shift hide" name="运行" role="tabResponser" group="group_1">
+                        <ul class="nav">
+                            <li class="active" role="tabTrigger" group="group_3">基本运行</li>
+                            <li role="tabTrigger" group="group_3">开始调试</li>
+                        </ul>
+                        <div class="show" role="tabResponser" group="group_3" name="基本运行">
+                            <h1>基本运行
+                                <a class="btn small bk-blue">运行</a>
+                                <a class="btn small bk-orange">终止</a>
+                                <a class="btn small bk-red">清理</a>
+                            </h1>
+                            <div>
+                                <div class="nano">
+                                    <div class="nano-content">
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                        <div class="bar">2017/12/13 15:38:22 - 正在开始任务...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="m-core hide" lib-belong="113">矫正3</div>
+                <div class="m-show-bellow hide" lib-belong="113"></div>
+                <div class="m-core hide" lib-belong="121">信息1</div>
+                <div class="m-show-bellow hide" lib-belong="121"></div>
+                <div class="m-core hide" lib-belong="122">信息2</div>
+                <div class="m-show-bellow hide" lib-belong="122"></div>
+                <div class="m-core hide" lib-belong="123">信息3</div>
+                <div class="m-show-bellow hide" lib-belong="123"></div>
+                <div class="m-core hide" lib-belong="211">Iowa</div>
+                <div class="m-show-bellow hide" lib-belong="211"></div>
+                <div class="m-core hide" lib-belong="212">Montana</div>
+                <div class="m-show-bellow hide" lib-belong="212"></div>
+                <div class="m-core hide" lib-belong="213">Yamato</div>
+                <div class="m-show-bellow hide" lib-belong="213"></div>
+                <div class="m-core hide" lib-belong="221">severodvinsk</div>
+                <div class="m-show-bellow hide" lib-belong="221"></div>
+                <div class="m-core hide" lib-belong="222">Ohio</div>
+                <div class="m-show-bellow hide" lib-belong="222"></div>
+                <div class="m-core hide" lib-belong="223">Delta</div>
+                <div class="m-show-bellow hide" lib-belong="223"></div>
+            </div>
+            <!-- 右侧组件库 -->
+            <div class="m-right-lib">
+                <h1>组件库</h1>
+                <div class="components-list elements" id="elementLib">
+                    <div class="bar">
+                        <div class="inner">
+                            <span>输入组件</span>
+                            <i class="fa fa-angle-down"></i>
+                        </div>
+                        <div class="lib">
+                            <div class="element-lib">
+                                <div class="element" id="in_ftp" type="input" title="FTP文件"><i class="icon icon-input-ftp"></i></div>
+                                <div class="element" id="in_table" type="input" title="表输入"><i class="icon icon-input-table"></i></div>
+                                <div class="element" id="in_csv" type="input" title="CSV文件"><i class="icon icon-input-csv"></i></div>
+                                <div class="element" id="in_excel" type="input" title="Excel文件"><i class="icon icon-input-excel"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bar">
+                        <div class="inner">
+                            <span>输出组件</span>
+                            <i class="fa fa-angle-down"></i>
+                        </div>
+                        <div class="lib">
+                            <div class="element-lib">
+                                <div class="element" id="out_csv" type="output" title="CSV文件"><i class="icon icon-output-csv"></i></div>
+                                <div class="element" id="out_excel" type="output" title="Excel文件"><i class="icon icon-output-excel"></i></div>
+                                <div class="element" id="out_kafka" type="output" title="Kafka"><i class="icon icon-output-kafka"></i></div>
+                                <div class="element" id="out_neo" type="output" title="Neo4j"><i class="icon icon-output-neo"></i></div>
+                                <div class="element" id="out_table" type="output" title="表输出"><i class="icon icon-output-table"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bar">
+                        <div class="inner">
+                            <span>转换组件</span>
+                            <i class="fa fa-angle-down"></i>
+                        </div>
+                        <div class="lib">
+                            <div class="element-lib">
+                                <div class="element" id="el_start" type="start" title="开始"><i class="icon icon-start"></i></div>
+                                <div class="element" id="tr_js" type="transform" title="JS脚本"><i class="icon icon-transform-js"></i></div>
+                                <div class="element" id="tr_sql" type="transform" title="SQL语句"><i class="icon icon-transform-sql"></i></div>
+                                <div class="element" id="tr_reg" type="transform" title="正则表达式"><i class="icon icon-transform-reg"></i></div>
+                                <div class="element" id="tr_string" type="transform" title="字符串操作"><i class="icon icon-transform-string"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bar">
+                        <div class="inner">
+                            <span>最近使用</span>
+                            <i class="fa fa-angle-down"></i>
+                        </div>
+                        <div class="lib">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 新建数据源子文件 -->
+        <div class="modal fade" id="newData" role="dialog">
+            <div class="modal-dialog" role="document" style="width:840px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="btn modal-close" data-dismiss="modal">&times;</a>
+                    </div>
+                    <div class="modal-body" style="padding:0;">
+                        <div class="new-data">
+                            <div class="left">
+                                <h3>连接名称</h3>
+                                <input type="text" class="form-control" id="dataOriName" data-necessary="true" reservation="连接名">
+                                <h3>主机名称</h3>
+                                <input type="text" class="form-control" data-necessary="true" reservation="主机名">
+                                <h3>数据库名称</h3>
+                                <input type="text" class="form-control" data-necessary="true" reservation="数据库名">
+                                <h3>实例名称</h3>
+                                <input type="text" class="form-control" data-necessary="true" reservation="实例名称">
+                                <h3>端口号</h3>
+                                <input type="text" class="form-control" data-necessary="true" reservation="端口号">
+                                <h3>用户名</h3>
+                                <input type="text" class="form-control" data-necessary="true" reservation="用户名">
+                                <h3>密码</h3>
+                                <input type="password" class="form-control" data-necessary="true" reservation="密码<">
+                            </div>
+                            <div class="right">
+                                <h3>连接类型</h3>
+                                <div class="chooser">
+                                    <div class="nano">
+                                        <ul class="nano-content">
+                                            <li>选项1</li>
+                                            <li>选项2</li>
+                                            <li>选项3</li>
+                                            <li>选项4</li>
+                                            <li>选项5</li>
+                                            <li>选项6</li>
+                                            <li>选项7</li>
+                                            <li>选项8</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <h3>连接方式</h3>
+                                <div class="chooser">
+                                    <div class="nano">
+                                        <ul class="nano-content">
+                                            <li>选项1</li>
+                                            <li>选项2</li>
+                                            <li>选项3</li>
+                                            <li>选项4</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn bk-orange standard">测试</a>
+                        <a class="btn bk-lt-blue standard">浏览</a>
+                        <a class="btn standard default" data-dismiss="modal">取消</a>
+                        <a class="btn bk-blue standard" role="confirm">确定</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 新建文件夹 -->
+        <div class="modal fade" id="newFold" role="dialog">
+            <div class="modal-dialog" role="document" style="width:522px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        新建文件夹
+                        <a class="btn modal-close" data-dismiss="modal">&times;</a>
+                    </div>
+                    <div class="modal-body" style="padding:0;">
+                        <div class="new-fold">
+                            <div class="bar">
+                                <h3>文件夹名</h3>
+                                <input type="text" class="form-control" id="foldName" data-necessary="true" reservation="文件夹名">
+                                <div class="errorBar"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn standard default" data-dismiss="modal">取消</a>
+                        <a class="btn bk-blue standard" role="confirm">确定</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 新建作业子文件 -->
+        <div class="modal fade" id="newFile" role="dialog">
+            <div class="modal-dialog" role="document" style="width:522px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        新建子文件
+                        <a class="btn modal-close" data-dismiss="modal">&times;</a>
+                    </div>
+                    <div class="modal-body" style="padding:0;">
+                        <div class="new-fold">
+                            <div class="bar">
+                                <h3>文件名</h3>
+                                <input type="text" class="form-control" id="fileName" data-necessary="true" reservation="文件名">
+                                <div class="errorBar"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn standard default" data-dismiss="modal">取消</a>
+                        <a class="btn bk-blue standard" role="confirm">确定</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 警告框 -->
+        <div class="modal alert-modal" id="alertModal" role="dialog">
+            <div class="modal-dialog" role="document" style="width:380px;">
+                <div class="modal-content">
+                    <div class="modal-header">提示<a class="btn modal-close" data-dismiss="modal">&times;</a></div>
+                    <div class="modal-body" style="padding:0;">
+                        <div class="alert-content"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn bk-blue standard" data-dismiss="modal">确定</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 选择框 -->
+        <div class="modal alert-modal" id="alternativeModal" role="dialog">
+            <div class="modal-dialog" role="document" style="width:380px;">
+                <div class="modal-content">
+                    <div class="modal-header">提示<a class="btn modal-close" data-dismiss="modal">&times;</a></div>
+                    <div class="modal-body" style="padding:0;">
+                        <div class="alert-content"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn default standard" data-dismiss="modal">取消</a>
+                        <a class="btn bk-blue standard" role="confirm">确定</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="vender/js/jquery-2.2.1.min.js"></script>
+        <script src="vender/jquery-ui/jquery-ui.min.js"></script>
+        <script src="vender/js/jsplumb.js"></script>
+        <script src="vender/js/velocity.min.js"></script>
+        <script src="vender/js/dialog.js"></script>
+        <script src="vender/nanoscroller/nanoscroller.min.js"></script>
+        <script src="js/common.js"></script>
+        <script src="js/index.js"></script>
+    </body>
+</html>
